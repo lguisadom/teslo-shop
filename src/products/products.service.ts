@@ -7,7 +7,6 @@ import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductsService {
-
   private readonly logger = new Logger('ProductsService');
 
   constructor(
