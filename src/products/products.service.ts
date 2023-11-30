@@ -48,13 +48,13 @@ export class ProductsService {
         // product = await this.productRepository.findOneBy({ slug: term });
         const queryBuilder = this.productRepository.createQueryBuilder();
         product = await queryBuilder
-        .where('UPPER(title) = :title or slug = :slug', {
-          title: term.toUpperCase(),
-          slug: term.toLowerCase()
-        })
-        .getOne();
+          .where('UPPER(title) = :title or slug = :slug', {
+            title: term.toUpperCase(),
+            slug: term.toLowerCase()
+          })
+          .getOne();
       }
-      
+
       this.logger.log('product: ', { product });
 
       if (!product) {
@@ -74,16 +74,16 @@ export class ProductsService {
         id: id,
         ...updateProductDto
       });
-  
+
       if (!product) {
         throw new NotFoundException(`Product with id=${id} not found`);
       }
-  
+
       await this.productRepository.save(product);
-  
+
       return product;
     } catch (error) {
-      this.handleDBExceptions(error); 
+      this.handleDBExceptions(error);
     }
   }
 
@@ -99,7 +99,7 @@ export class ProductsService {
   }
 
   private handleDBExceptions(error: any) {
-    this.logger.error(error);
+    this.logger.error('error: ', { error });
 
     if (error.code === '23505') {
       throw new BadRequestException(error.detail);
