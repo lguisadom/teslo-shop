@@ -137,7 +137,6 @@ export class ProductsService {
       return this.findOnePlane(id);
 
     } catch (error) {
-      console.error(error);
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
       this.handleDBExceptions(error);
