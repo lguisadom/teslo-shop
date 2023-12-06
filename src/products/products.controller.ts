@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseUUIDPipe, Query, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -22,7 +22,8 @@ export class ProductsController {
 
   @Get(':term')
   findOne(@Param('term') term: string) {
-    return this.productsService.findOne(term);
+    // return this.productsService.findOne(term);
+    return this.productsService.findOnePlane(term);
   }
 
   @Patch(':id')
