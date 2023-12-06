@@ -14,6 +14,7 @@ API for managing [Brief description of what the project does].
   - [Configuration](#configuration)
   - [Database Setup](#database-setup)
   - [Running the Application](#running-the-application)
+  - [Seed execution](#seed-execution)
 
 ## Clone the Project
 
@@ -44,4 +45,8 @@ yarn start:dev
 ```
 
 
-
+## Seed execution
+Run the seed with curl or with postman
+```bash
+curl --location 'http://localhost:3000/api/seed'
+```
