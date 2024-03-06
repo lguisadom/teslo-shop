@@ -241,7 +241,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/luisguisado/Imágenes/androidstudio.png"
+									"src": "/home/luisguisado/Imágenes/angular.png"
 								}
 							]
 						},
@@ -278,6 +278,31 @@
 								"files",
 								"product",
 								"1473809-00-A_alt.jpg"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ws",
+			"item": [
+				{
+					"name": "ws test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/socket.io/socket.io.js",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"socket.io",
+								"socket.io.js"
 							]
 						}
 					},
