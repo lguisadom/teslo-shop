@@ -1,15 +1,18 @@
 import { OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway } from '@nestjs/websockets';
 import { MessagesWsService } from './messages-ws.service';
+import { Socket } from 'socket.io';
 
 @WebSocketGateway({ cors: true })
 export class MessagesWsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
-  constructor(private readonly messagesWsService: MessagesWsService) { }
-  
-  handleConnection(client: any, ...args: any[]) {
-    throw new Error('Method not implemented.');
+  constructor(
+    private readonly messagesWsService: MessagesWsService
+  ) { }
+
+  handleConnection(client: Socket) {
+    console.log('Client connected: ', client.id);
   }
-  handleDisconnect(client: any) {
-    throw new Error('Method not implemented.');
+  handleDisconnect(client: Socket) {
+    console.log('Client disconnected: ', client.id);
   }
 }
