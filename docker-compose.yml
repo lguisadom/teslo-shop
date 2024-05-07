@@ -9,6 +9,14 @@ services:
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
     container_name: testlodb
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      # - ./postgres:/var/lib/postgresql/data
+      - /home/lagm/volumes/postgres:/var/lib/postgresql/data
+    networks:
+      - lagm-local
+
+networks:
+  lagm-local:
+    name: lagm-local
