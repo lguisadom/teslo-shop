@@ -30,6 +30,14 @@ export class AuthController {
     return this.authService.login2(loginUserDto);
   }
 
+  @Get("check-auth-status")
+  @Auth() // Ruta protegida. Sin rol. Mínimo cualquier usuario debe enviar un JWT vigente y correcto.
+  checkAuthStatus(
+    @GetUser() user: User
+  ) {
+    return this.authService.checkAuthStatus(user);
+  }
+
   @Get("private")
   @UseGuards(AuthGuard())
   testingPrivateRoute(
