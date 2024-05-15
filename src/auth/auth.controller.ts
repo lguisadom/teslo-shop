@@ -1,11 +1,15 @@
-import { Body, Controller, Get, Headers, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post, Req, SetMetadata, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { IncomingHttpHeaders } from 'http';
 import { RawHeaders } from 'src/common/decorators/raw-headers.decorator';
 import { AuthService } from './auth.service';
-import { GetGreeting, GetGreeting2, GetGreeting3, GetGreeting4, GetUser } from './decorators';
+import { Auth, GetGreeting, GetGreeting2, GetGreeting3, GetGreeting4, GetUser } from './decorators';
 import { CreateUserDto, LoginUserDto } from './dto';
 import { User } from './entities/user.entity';
+import { UserRoleGuard } from './guards/user-role/user-role.guard';
+import { UserRoleGreeting4Guard } from './guards/user-role-greeting4/user-role-greeting4.guard';
+import { RoleProtected } from './decorators/role-protected.decorator';
+import { ValidRoles } from './interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -78,7 +82,8 @@ export class AuthController {
   }
 
   @Get("greeting4")
-  @UseGuards(AuthGuard())
+  @SetMetadata("roles", ["admin", "user"])
+  @UseGuards(AuthGuard(), UserRoleGreeting4Guard)
   greeting4(
     @GetGreeting4() user: User,
     @GetGreeting4() email: string
@@ -98,6 +103,32 @@ export class AuthController {
     return {
       param1: "123",
       headers
+    };
+  }
+
+  @Get("private2")
+  // @SetMetadata("role", ["admin", "super-user"])
+  @RoleProtected(ValidRoles.superUser, ValidRoles.admin)
+  @UseGuards(AuthGuard(), UserRoleGuard)
+  privateRoute2(
+    @GetUser() user: User
+  ) {
+    return {
+      ok: true,
+      user
+    };
+  }
+
+  @Get("private3")
+  // @RoleProtected(ValidRoles.superUser, ValidRoles.admin)
+  // @UseGuards(AuthGuard(), UserRoleGuard)
+  @Auth(ValidRoles.admin, ValidRoles.superUser)
+  privateRoute3(
+    @GetUser() user: User
+  ) {
+    return {
+      ok: true,
+      user
     };
   }
 }
