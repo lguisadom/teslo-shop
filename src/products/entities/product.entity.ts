@@ -69,8 +69,6 @@ export class Product {
 
   @BeforeInsert()
   checkSlugInsert() {
-    console.log('checkSlugInsert..');
-
     if (!this.slug) {
       this.slug = this.title;
     }

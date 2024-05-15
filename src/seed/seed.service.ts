@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { ProductsService } from 'src/products/products.service';
-import { initialData } from './data/seed-data';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import * as bcrypt from "bcrypt";
+import { User } from "src/auth/entities/user.entity";
+import { ProductsService } from "src/products/products.service";
+import { Repository } from "typeorm";
+import { initialData } from "./data/seed-data";
 
 @Injectable()
 export class SeedService {
@@ -19,7 +20,7 @@ export class SeedService {
     await this.deleteTables();
     const adminUser = await this.insertUsers();
     await this.insertNewProducts(adminUser);
-    return 'SEED EXECUTED';
+    return "SEED EXECUTED";
   }
 
   private async insertNewProducts(user: User) {
@@ -40,21 +41,25 @@ export class SeedService {
     const users: User[] = [];
 
     seedUsers.forEach(seedUser => {
-      users.push(this.userRepository.create(seedUser));
+      const { password, ...userData } = seedUser;
+      users.push(this.userRepository.create({
+        ...userData,
+        password: bcrypt.hashSync(password, 10)
+      }));
     });
 
-    const dbUsers: User[] = await this.userRepository.save(seedUsers);
+    const dbUsers: User[] = await this.userRepository.save(users);
 
     return dbUsers[0];
   }
 
   private async deleteTables() {
     await this.productsService.deleteAllProducts();
-  
+
     const queryBuilder = this.userRepository.createQueryBuilder("user");
     await queryBuilder
-    .delete()
-    .where({}) // without condition
-    .execute();
+      .delete()
+      .where({}) // without condition
+      .execute();
   }
 }
