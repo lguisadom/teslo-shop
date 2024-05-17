@@ -21,7 +21,13 @@ import { SeedModule } from './seed/seed.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
-      synchronize: true // Solo para DEV, no suele usar en PROD.
+      synchronize: true, // Solo para DEV, no suele usar en PROD.
+
+      // PROD
+      ssl: process.env.STAGE === 'prod',
+      extra: {
+        ssl: process.env.STAGE === 'prod' ? { rejectUnauthorized: false } : null
+      }
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public')
